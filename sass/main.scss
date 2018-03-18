@@ -1,0 +1,50 @@
+// nav
+
+.top_bar {
+    font-size: .8rem;
+    color: #35425F;
+}
+
+// body
+
+h2 {
+    color: #35425F;
+}
+
+.create_playlist {
+    margin-top: 4.5em;
+    color: #ffffff;
+    background-color: #EE4585;
+    width: 10em;
+    height: 2.5em;
+    border-radius: 2.5em;
+}
+
+.break {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+hr {
+    width: 1in;
+    height: .025in;
+    background-color: #F1F2F3;
+}
+
+#or {
+    margin-left: .75em;
+    margin-right: .75em;
+    font-size: 1.5em;
+    color: #F1F2F3;
+}
+
+.join_playlist {
+    margin-top: 2em;
+    color: #ffffff;
+    background-color: #FAA541;
+    width: 10em;
+    height: 2.5em;
+    border-radius: 2.5em;
+}
