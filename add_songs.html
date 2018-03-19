@@ -21,31 +21,41 @@
     </div>
     
     <nav>
-        <ul class="nav">
-            <li class="nav-item container-fluid">
-                <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" class="float-right" width="45px"></a>
+        <ul class="nav container">
+            <li class="nav-item">
+                <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+            </li>
+            <li class="nav-item">
+                <h4>Add Songs</h4>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
             </li>
         </ul>
     </nav>
 
-    <h2 class="text-center mt-5">Vibe</h2>
+    <div class="col" align="center">
+            <input type="text" class="form_control" id="search" text-align="center" placeholder="Search Songs"><br>
+    </div>
 
-    <a href="create_playlist.html">click</a>
+    <div class="container">
+        <h5>Popular Songs</h5>
+        <div><hr class="col deco_long" align="center"></div>
+    </div>
 
+    <div class="container">
+            <h5>Genres and Mood</h5>
+            <div><hr class="col deco_long" align="center"></div>
+    </div>
+
+    <div class="separate">
+        <div><hr class="col deco_short" align="center"></div>
+    </div>
     <div class="text-center"> 
-            <button class="btn create_playlist">Create Playlist</button> 
+            <button class="btn view_playlist">View Playlist</button> 
     </div>
 
-    <div class="break">
-        <div><hr class="deco"></div>
-        <div id="or">OR</div>
-        <div><hr class="deco"></div>
-    </div>
-
-    <div class="text-center"> 
-            <button class="btn join_playlist">Join Playlist</button> 
-    </div>
-
+    <a href="host_playlist.html">click</a>
 
     <script src="dist/app.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
