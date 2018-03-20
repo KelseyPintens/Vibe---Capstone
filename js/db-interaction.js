@@ -4,6 +4,7 @@
 
 let $ = require('jquery'),
     firebase = require("./fb-config"),
+    // users = require("./user"),
     provider = new firebase.auth.GoogleAuthProvider();
 
 // ****************************************
@@ -64,7 +65,43 @@ function logOut() {
 // 	});
 // }
 
+////// Creating FB Playlist ///////
+
+//data builder
+function buildPlaylistObj(data){
+    var playlist = document.getElementById("playlist_name").value;
+    var password = document.getElementById("password").value;
+    let playlistObj = {
+      code: password,  
+      playlistName: playlist,
+    //   uid: users.getUser()
+    };
+    return playlistObj;
+  }
+  
+  //data poster
+  function addPlaylist(playlistObj){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
+        type: 'POST',
+        data: JSON.stringify(playlistObj),
+        dataType: 'json'
+    }).done((playlistID) => {
+        return playlistID;
+    });
+  }
+
+  $("#create_playlist").click(function() {
+    let playlistObj = buildPlaylistObj();
+    addPlaylist(playlistObj).then(
+        (resolve) =>{
+            console.log("resolved");
+    });
+  });
+
 module.exports = {
+    buildPlaylistObj,
+    addPlaylist,
     getFBDetails,
     addUserFB,
     updateUserFB,
