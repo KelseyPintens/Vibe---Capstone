@@ -1,40 +1,140 @@
-
 "use strict";
-
-
-
 //install firebase into lib folder npm install firebase --save
-var firebase = require("./fb-config"),
-	 provider = new firebase.auth.GoogleAuthProvider(),
-	 currentUser = null;
+let firebase = require("./fb-config"),
+   db = require("./db-interaction"),
+   $ = require("jquery");
 
+let currentUser = {
+     uid: null,
+    };
+
+// call logout when page loads to avoid currentUser.uid
+// db.logOut();
 //listen for changed state
 firebase.auth().onAuthStateChanged((user) => {
-	//console.log("onAuthStateChanged", user);
+	console.log("onAuthStateChanged", user);
 	if (user){
-		currentUser = user.uid;
-		//console.log("current user Logged in?", currentUser);
+		currentUser.uid = user.uid;
+      console.log("current user Logged in?", currentUser);
 	}else {
-		currentUser = null;
-		//console.log("current user NOT logged in:", currentUser);
+      currentUser.uid = null;
+      console.log("current user NOT logged in:", currentUser);
 	}
 });
 
-function logInGoogle() {
-	//all firebase functions return a promise!! Add a then when called
 
-	return firebase.auth().signInWithPopup(provider);
-}
-
-function logOut(){
-	return firebase.auth().signOut();
-}
 function getUser(){
-	return currentUser;
+	return currentUser.uid;
 }
 
 function setUser(val){
-	currentUser = val;
+	currentUser.uid = val;
 }
 
-module.exports = {logInGoogle, logOut, getUser, setUser};
+function getUserObj(){
+    return currentUser;
+}
+
+function setUserVars(obj){
+    console.log("user.setUserVars: obj", obj);
+    return new Promise((resolve, reject) => {
+        currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
+        resolve(currentUser);
+    });
+}
+
+function showUser(obj) {
+   let userDetails = getUserObj();
+   console.log("user.showUser: userDetails:", userDetails);
+}
+
+function checkUserFB(uid){
+    db.getFBDetails(uid)
+    .then((result) => {
+        let data = Object.values(result);
+        console.log("user: any data?", data.length);
+        if (data.length === 0){
+            console.log("need to add this user to FB" , data);
+           db.addUserFB(makeUserObj(uid))
+            .then((result) => {
+               console.log("user: user added", uid, result.name);
+               let tmpUser = {
+                  fbID: result.name,
+                  uid: uid
+               };
+               return tmpUser;
+            }).then((tmpUser) => {
+                  return setUserVars(tmpUser);
+            });
+            // .then((userObj) => {
+            //    getUserWeather(userObj);
+            // });
+        }
+        // else{
+        //     console.log("user: already a user", data);
+        //     var key = Object.keys(result);
+        //     data[0].fbID = key[0];
+        //     setUserVars(data[0])
+        //        .then((resolve) => {
+        //           getUserWeather(resolve);
+        //        });
+        // }
+      //only show once a user is logged in
+       $("#zip-container").removeClass("is-hidden");
+    });
+}
+
+// function getUserWeather(userObj) {
+//    //either get weather from user obj or make call to weather
+//    //make API Call
+//    console.log("getUserWeather: userObj", getUserObj());
+//    if (userObj.weatherTime != null) {
+//       if (helper.compareDateHelper(getUserObj().weatherTime, new Date())) {
+//          console.log("user.getUserWeather: compare true");
+//          console.log("user.getUserWeather: use weather in obj");
+//          showUser(userObj);
+//       } else {
+//          console.log("user.getUserWeather: compare false", userObj.zipCode);
+//          getUpdateWeather(userObj.zipCode);
+//       }
+//    } else {
+//       console.log("user.getUserWeather: no weather, go get some", userObj.zipCode);
+//       getUpdateWeather(userObj.zipCode);
+//    }
+// }
+
+// function getUpdateWeather(zip) {
+//    //get weather
+//    weather.getWeatherByZip(zip)
+//       .then((weather) => {
+//          let userObj = {
+//             weatherTime: new Date(),
+//             weather: weather.main.temp
+//          };
+//          return setUserVars(userObj);
+//       }).then((userObj) => {
+//          db.updateUserFB(userObj)
+//             .then(() => {
+//                showUser(userObj);
+//             });
+//       });
+// }
+
+
+function makeUserObj(uid){
+   let userObj = {
+      uid: uid
+   };
+   return userObj;
+}
+
+
+module.exports = {
+   checkUserFB,
+   getUser,
+   setUser,
+   setUserVars,
+   getUserObj,
+   showUser,
+//    getUserWeather
+};
