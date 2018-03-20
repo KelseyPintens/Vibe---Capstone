@@ -21,7 +21,9 @@ clickedLogin =
 <h2 class="text-center mt-5">Vibe</h2>
 
 <div class="text-center"> 
-        <a href="create_playlist.html" class="btn create_playlist" id="create_playlist">Create Playlist</a> 
+
+    <a href="create_playlist.html" class="btn create_playlist" id="create_playlist">Create Playlist</a> 
+
 </div>
 
 <div class="break">
@@ -31,7 +33,10 @@ clickedLogin =
 </div>
 
 <div class="text-center"> 
-        <button class="btn join_playlist" id="join_playlist">Join Playlist</button> 
+
+    <button class="btn join_playlist" id="join_playlist">Join Playlist</button> 
+
+
 </div>`;
     body.innerHTML = clickedLogin;
 }
@@ -39,6 +44,7 @@ clickedLogin =
 
 // function that will render the '#body-container' with the reservation form
 $("#log_in").click(function() {
+
     domLogin();
 });
 

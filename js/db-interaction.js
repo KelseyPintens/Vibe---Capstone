@@ -4,7 +4,7 @@
 
 let $ = require('jquery'),
     firebase = require("./fb-config"),
-    user = require("./user.js"),
+    // users = require("./user"),
     provider = new firebase.auth.GoogleAuthProvider();
 
 // ****************************************
@@ -65,7 +65,6 @@ function logOut() {
 // 	});
 // }
 
-
 ////// Creating FB Playlist ///////
 
 //data builder
@@ -75,7 +74,7 @@ function buildPlaylistObj(data){
     let playlistObj = {
       code: password,  
       playlistName: playlist,
-      uid: user.getUser()
+    //   uid: users.getUser()
     };
     return playlistObj;
   }
@@ -101,6 +100,8 @@ function buildPlaylistObj(data){
   });
 
 module.exports = {
+    buildPlaylistObj,
+    addPlaylist,
     getFBDetails,
     addUserFB,
     updateUserFB,
