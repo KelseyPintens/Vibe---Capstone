@@ -63,7 +63,8 @@ h5 {
 }
 
 .log_in {
-    margin-top: 2em;
+    margin-top: 6em;
+    margin-bottom: 2em;
     color: #ffffff;
     background-color: $blue;
     width: 10em;
@@ -73,11 +74,8 @@ h5 {
 
 .create_account {
     margin-top: 2em;
-    color: #ffffff;
-    background-color: $green;
-    width: 10em;
-    height: 2.5em;
-    border-radius: 2.5em;
+    color: $green;
+    font-size: 1em;
 }
 
 .view_playlist {
