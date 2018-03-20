@@ -24,6 +24,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 function getUser(){
+    console.log("current user", currentUser);
 	return currentUser.uid;
 }
 
@@ -49,6 +50,7 @@ function showUser(obj) {
 }
 
 function checkUserFB(uid){
+    console.log("db",db);
     db.getFBDetails(uid)
     .then((result) => {
         let data = Object.values(result);
@@ -128,13 +130,48 @@ function makeUserObj(uid){
    return userObj;
 }
 
+////// Creating FB Playlist ///////
+
+//data builder
+function buildPlaylistObj(data){
+    var playlist = document.getElementById("playlist_name").value;
+    var password = document.getElementById("password").value;
+    let playlistObj = {
+      code: password,  
+      playlistName: playlist,
+      uid: getUser()
+    };
+    return playlistObj;
+  }
+  
+  //data poster
+  function addPlaylist(playlistObj){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
+        type: 'POST',
+        data: JSON.stringify(playlistObj),
+        dataType: 'json'
+    }).done((playlistID) => {
+        return playlistID;
+    });
+  }
+
+  $("#create_playlist").click(function() {
+    let playlistObj = buildPlaylistObj();
+    addPlaylist(playlistObj).then(
+        (resolve) =>{
+            console.log("resolved");
+    });
+  });
+
 
 module.exports = {
    checkUserFB,
+   buildPlaylistObj,
+   addPlaylist,
    getUser,
    setUser,
    setUserVars,
    getUserObj,
-   showUser,
-//    getUserWeather
+   showUser
 };
