@@ -1,8 +1,10 @@
 "use strict";
 
 let $ = require('jquery');
-var body = document.getElementById("body-container");
 
+////////// Clicked Log In//////////////
+
+var body = document.getElementById("body-container");
 
 var clickedLogin;
 function domLogin() {
@@ -18,10 +20,8 @@ clickedLogin =
 
 <h2 class="text-center mt-5">Vibe</h2>
 
-<a href="create_playlist.html">click</a>
-
 <div class="text-center"> 
-        <button class="btn create_playlist">Create Playlist</button> 
+        <a href="create_playlist.html" class="btn create_playlist" id="create_playlist">Create Playlist</a> 
 </div>
 
 <div class="break">
@@ -31,7 +31,7 @@ clickedLogin =
 </div>
 
 <div class="text-center"> 
-        <button class="btn join_playlist">Join Playlist</button> 
+        <button class="btn join_playlist" id="join_playlist">Join Playlist</button> 
 </div>`;
     body.innerHTML = clickedLogin;
 }
@@ -39,8 +39,7 @@ clickedLogin =
 
 // function that will render the '#body-container' with the reservation form
 $("#log_in").click(function() {
-    console.log("load the DOM with a reservation - function (renderReservationForm)");
     domLogin();
 });
 
-// module.exports = {callRestaurants};
+
