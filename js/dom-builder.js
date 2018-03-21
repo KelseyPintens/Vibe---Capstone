@@ -34,7 +34,7 @@ clickedLogin =
 
 <div class="text-center"> 
 
-    <button class="btn join_playlist" id="join_playlist">Join Playlist</button> 
+    <a href="join_playlist.html" class="btn join_playlist" id="join_playlist">Create Playlist</a>
 
 
 </div>`;
