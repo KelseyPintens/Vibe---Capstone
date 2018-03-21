@@ -87,42 +87,6 @@ function checkUserFB(uid){
     });
 }
 
-// function getUserWeather(userObj) {
-//    //either get weather from user obj or make call to weather
-//    //make API Call
-//    console.log("getUserWeather: userObj", getUserObj());
-//    if (userObj.weatherTime != null) {
-//       if (helper.compareDateHelper(getUserObj().weatherTime, new Date())) {
-//          console.log("user.getUserWeather: compare true");
-//          console.log("user.getUserWeather: use weather in obj");
-//          showUser(userObj);
-//       } else {
-//          console.log("user.getUserWeather: compare false", userObj.zipCode);
-//          getUpdateWeather(userObj.zipCode);
-//       }
-//    } else {
-//       console.log("user.getUserWeather: no weather, go get some", userObj.zipCode);
-//       getUpdateWeather(userObj.zipCode);
-//    }
-// }
-
-// function getUpdateWeather(zip) {
-//    //get weather
-//    weather.getWeatherByZip(zip)
-//       .then((weather) => {
-//          let userObj = {
-//             weatherTime: new Date(),
-//             weather: weather.main.temp
-//          };
-//          return setUserVars(userObj);
-//       }).then((userObj) => {
-//          db.updateUserFB(userObj)
-//             .then(() => {
-//                showUser(userObj);
-//             });
-//       });
-// }
-
 
 function makeUserObj(uid){
    let userObj = {
@@ -190,37 +154,75 @@ function buildPlaylistObj(data){
     
         <nav class="fixed-bottom navbar-light bg-light">
             <div class="text-center"> 
-                <a href="#" class="btn view_playlist">View Playlist</a>
+                <a href="#" class="btn view_playlist" id="view_playlist">View Playlist</a>
             </div>
         </nav>
         
         <div class="currentPlaylist" style="display: none;" id="currentPlaylist" id="${resolve.name}">${resolve.name}</div>`; 
 
-        // $("#search_songs").click(function() {
-        //     console.log("click");
-        //       youtube.getYouTubeData().then((resolve) => {
-        //         console.log(resolve.items);
-        //         var songList = document.getElementById("song_list");
-        //         var i = 0;
-        //         songList.innerHTML = "";
-        
-        //         for (i = 0; i < resolve.items.length; i++) { 
-        //           songList.innerHTML += 
-        //           `<div class="print_song_list">
-        //             <div><hr class="col deco_long" align="center"></div>
-        //             <div class="song_container">
-        //               <div><img src="${resolve.items[i].snippet.thumbnails.default.url}" alt="song thumbnail" class="song_image"></div>
-        //               <div class="song_info">
-        //                 <h1 class="song_title">${resolve.items[i].snippet.title}</h1>
-        //                 <h2 class="song_artist">${resolve.items[i].snippet.channelTitle}</h2>
-        //               </div>
-        //               <div><img src="images/add_song.png" alt="add song" class="add_song_image" id="${i}"></div>
-        //             </div>
-        //           </div>`;
-                          
-        //       }  
-        //     });
-        // });
+                /////// viewing playlist////////
+
+                $("#view_playlist").click(function() {
+                    function getPlaylistdata(){
+                        return $.ajax({
+                            url: `${firebase.getFBsettings().databaseURL}/playlists.json`
+                         }).done((resolve) => {
+                            return resolve;
+                         }).fail((error) => {
+                            return error;
+                         });
+                      }
+                    console.log("clicked view playlist");
+                    getPlaylistdata(resolve).then(
+                    (resolve)=>{ console.log(resolve);
+                        var playlistID = $(".currentPlaylist").text();
+                        var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+                        console.log(keys);
+                        var i=0;
+                            for (i = 0; i < keys.length; i++) { 
+                            if (keys[i].key == playlistID) {
+                            var body = document.getElementById("body-container"); 
+                            body.innerHTML = `<div>${keys[i].playlistName}</div>`;
+                            console.log(keys[i].playlistName);
+                            }
+                        } 
+            
+                    }); 
+                    //         var body = document.getElementById("body-container"); 
+                    //         body.innerHTML = `<nav>
+                    //         <ul class="nav container">
+                    //             <li class="nav-item">
+                    //                 <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+                    //             </li>
+                    //             <li class="nav-item">
+                    //                 <h4>Add Songs</h4>
+                    //             </li>
+                    //             <li class="nav-item">
+                    //                 <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                    //             </li>
+                    //         </ul>
+                    //     </nav>
+                    
+                    //     <div class="col" align="center">
+                    //             <input type="text" class="form_control" id="search" text-align="center" placeholder="Search Songs"><br>
+                    //     </div>
+                    
+                    //     <div class="text-center"> 
+                    //         <a href="#" class="btn search_songs" id="search_songs">Search</a>
+                    //     </div>
+                    
+                    //     <div id="song_list"></div>
+                    
+                    //     <nav class="fixed-bottom navbar-light bg-light">
+                    //         <div class="text-center"> 
+                    //             <a href="#" class="btn view_playlist">View Playlist</a>
+                    //         </div>
+                    //     </nav>
+                        
+                    //     <div class="currentPlaylist" style="display: none;" id="currentPlaylist" id="${resolve.name}">${resolve.name}</div>`;   }); 
+                });
+
+        //////// search songs//////////////
 
         $("#search_songs").click(function() {
             console.log("click");
@@ -245,10 +247,11 @@ function buildPlaylistObj(data){
                   </div>`;
                           
               }  
+
+            //////////send songs to firebase///////////////
               
-              document.querySelector("body").addEventListener("click", sendSong);
+    document.querySelector("body").addEventListener("click", sendSong);
       
-      //clicked build data
       function sendSong(event){
           if (event.target.className === "add_song_image"){
               console.log("id", event.target.id);
@@ -296,16 +299,6 @@ function buildPlaylistObj(data){
     
     });
   });
-
-//   $("#create_playlist").click(function() {
-//         var playlist = document.getElementById("playlist_name").value;
-//         var currentPlaylist = playlist;
-//   });
-
-//   $("view_playlist").click(function() {
-//     console.log(currentPlaylist);
-// });
-
 
 
 
