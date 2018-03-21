@@ -7,7 +7,8 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-    youtube = require("./youtube_api");
+    youtube = require("./youtube_api"),
+    playlist = require("./populate_playlist");
 
 
 // $("#logout").addClass("is-hidden");
