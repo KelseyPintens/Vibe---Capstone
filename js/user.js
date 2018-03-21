@@ -2,7 +2,8 @@
 //install firebase into lib folder npm install firebase --save
 let firebase = require("./fb-config"),
    db = require("./db-interaction"),
-   $ = require("jquery");
+   $ = require("jquery"),
+   youtube = require("./youtube_api");
 
 let currentUser = {
      uid: null,
@@ -156,13 +157,156 @@ function buildPlaylistObj(data){
     });
   }
 
+
   $("#create_playlist").click(function() {
     let playlistObj = buildPlaylistObj();
     addPlaylist(playlistObj).then(
         (resolve) =>{
-            console.log("resolved");
+            console.log(resolve.name);
+            var body = document.getElementById("body-container"); 
+            body.innerHTML = `<nav>
+            <ul class="nav container">
+                <li class="nav-item">
+                    <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+                </li>
+                <li class="nav-item">
+                    <h4>Add Songs</h4>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                </li>
+            </ul>
+        </nav>
+    
+        <div class="col" align="center">
+                <input type="text" class="form_control" id="search" text-align="center" placeholder="Search Songs"><br>
+        </div>
+    
+        <div class="text-center"> 
+            <a href="#" class="btn search_songs" id="search_songs">Search</a>
+        </div>
+    
+        <div id="song_list"></div>
+    
+        <nav class="fixed-bottom navbar-light bg-light">
+            <div class="text-center"> 
+                <a href="#" class="btn view_playlist">View Playlist</a>
+            </div>
+        </nav>
+        
+        <div class="currentPlaylist" style="display: none;" id="currentPlaylist" id="${resolve.name}">${resolve.name}</div>`; 
+
+        // $("#search_songs").click(function() {
+        //     console.log("click");
+        //       youtube.getYouTubeData().then((resolve) => {
+        //         console.log(resolve.items);
+        //         var songList = document.getElementById("song_list");
+        //         var i = 0;
+        //         songList.innerHTML = "";
+        
+        //         for (i = 0; i < resolve.items.length; i++) { 
+        //           songList.innerHTML += 
+        //           `<div class="print_song_list">
+        //             <div><hr class="col deco_long" align="center"></div>
+        //             <div class="song_container">
+        //               <div><img src="${resolve.items[i].snippet.thumbnails.default.url}" alt="song thumbnail" class="song_image"></div>
+        //               <div class="song_info">
+        //                 <h1 class="song_title">${resolve.items[i].snippet.title}</h1>
+        //                 <h2 class="song_artist">${resolve.items[i].snippet.channelTitle}</h2>
+        //               </div>
+        //               <div><img src="images/add_song.png" alt="add song" class="add_song_image" id="${i}"></div>
+        //             </div>
+        //           </div>`;
+                          
+        //       }  
+        //     });
+        // });
+
+        $("#search_songs").click(function() {
+            console.log("click");
+              youtube.getYouTubeData().then((resolve) => {
+                console.log(resolve.items);
+                var songList = document.getElementById("song_list");
+                var i = 0;
+                songList.innerHTML = "";
+        
+                for (i = 0; i < resolve.items.length; i++) { 
+                  songList.innerHTML += 
+                  `<div class="print_song_list">
+                    <div><hr class="col deco_long" align="center"></div>
+                    <div class="song_container">
+                      <div><img src="${resolve.items[i].snippet.thumbnails.default.url}" alt="song thumbnail" class="song_image"></div>
+                      <div class="song_info">
+                        <h1 class="song_title">${resolve.items[i].snippet.title}</h1>
+                        <h2 class="song_artist">${resolve.items[i].snippet.channelTitle}</h2>
+                      </div>
+                      <div><img src="images/add_song.png" alt="add song" class="add_song_image" id="${i}"></div>
+                    </div>
+                  </div>`;
+                          
+              }  
+              
+              document.querySelector("body").addEventListener("click", sendSong);
+      
+      //clicked build data
+      function sendSong(event){
+          if (event.target.className === "add_song_image"){
+              console.log("id", event.target.id);
+              let id = event.target.id;
+              let sendSongObj = buildSendSongObj(id);
+              addSendSong(sendSongObj).then(
+                  (resolve) =>{
+                      console.log("yay");
+                  });
+          }
+      }
+      
+      var playlistID = $(".currentPlaylist").text();
+
+      // data builder
+      function buildSendSongObj(input){
+          console.log(playlistID);
+        let id = input;
+
+        let sendSongObj = {
+            title: `${resolve.items[`${id}`].snippet.title}`,
+            artist: `${resolve.items[`${id}`].snippet.channelTitle}`,
+            thumbnail: `${resolve.items[`${id}`].snippet.thumbnails.default.url}`,
+            videoID: `${resolve.items[`${id}`].id.videoId}`,
+            playlist_uid: playlistID
+        };
+        return sendSongObj;
+      }
+      
+      //data poster
+      function addSendSong(sendSongObj){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/songs.json`,
+            type: 'POST',
+            data: JSON.stringify(sendSongObj),
+            dataType: 'json'
+        }).done((sendSongID) => {
+          console.log(sendSongID);
+            return sendSongID;
+        });
+      }
+      
+        });
+        });
+    
     });
   });
+
+//   $("#create_playlist").click(function() {
+//         var playlist = document.getElementById("playlist_name").value;
+//         var currentPlaylist = playlist;
+//   });
+
+//   $("view_playlist").click(function() {
+//     console.log(currentPlaylist);
+// });
+
+
 
 
 module.exports = {

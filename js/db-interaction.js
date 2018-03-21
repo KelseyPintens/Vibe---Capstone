@@ -4,7 +4,8 @@
 
 let $ = require('jquery'),
     firebase = require("./fb-config"),
-    provider = new firebase.auth.GoogleAuthProvider();
+    provider = new firebase.auth.GoogleAuthProvider(),
+    youtube = require("./youtube_api");
 
 // ****************************************
 // DB interaction using Firebase REST API
@@ -63,6 +64,41 @@ function logOut() {
 // 		return data;
 // 	});
 // }
+
+// //data builder
+// function buildSongObj(data){
+
+//     let songObj = {
+//       title: youtube,  
+//       aritst: playlist,
+//       thumbnail: getUser(),
+//       videoID: video
+//     };
+//     return songObj;
+//   }
+
+
+//   //add song data poster
+//   function addSong(songObj){
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
+//         type: 'POST',
+//         data: JSON.stringify(playlistObj),
+//         dataType: 'json'
+//     }).done((playlistID) => {
+//         return playlistID;
+//     });
+//   }
+
+//   $("#create_playlist").click(function() {
+//     let playlistObj = buildPlaylistObj();
+//     addPlaylist(playlistObj).then(
+//         (resolve) =>{
+//             console.log("resolved");
+//     });
+//   });
+
+
 
 module.exports = {
     getFBDetails,
