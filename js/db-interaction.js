@@ -2,7 +2,7 @@
 
 let $ = require('jquery'),
     firebase = require("./fb-config"),
-youtube = require("./youtube_key"),
+    youtube = require("./youtube_key"),
     provider = new firebase.auth.GoogleAuthProvider();
 
 function getFBDetails(user){
@@ -66,6 +66,29 @@ function getYouTubeData() {
     });
     }
 
+    function getJoinPlaylists(){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/playlists.json`
+         }).done((resolve) => {
+             console.log("resolve", resolve);
+            return resolve;
+         }).fail((error) => {
+            return error;
+         });
+      }
+
+    function addJoin(joinObj){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/playlist_members.json`,
+            type: 'POST',
+            data: JSON.stringify(joinObj),
+            dataType: 'json'
+        }).done((joinID) => {
+          console.log(joinID);
+            return joinID;
+        });
+      }
+
 //example with delete
 // function deleteItem(fbID) {
 // 	return $.ajax({
@@ -81,6 +104,8 @@ module.exports = {
     getYouTubeData,
     addUserFB,
     updateUserFB,
+    addJoin,
+    getJoinPlaylists,
     logInGoogle,
     logOut
 };
