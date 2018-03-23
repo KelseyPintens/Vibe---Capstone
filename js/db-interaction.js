@@ -1,19 +1,9 @@
 "use strict";
-// This module has no knowledge of the DOM, or where the data goes after it is fetched from Firebase.
-// It is only concerned with getting and setting data in the db
 
 let $ = require('jquery'),
     firebase = require("./fb-config"),
-    provider = new firebase.auth.GoogleAuthProvider(),
-    youtube = require("./youtube_api");
-
-// ****************************************
-// DB interaction using Firebase REST API
-// ****************************************
-
-// POST - Submits data to be processed to a specified resource.
-// GET - Requests/read data from a specified resource
-// PUT - Update data to a specified resource.
+youtube = require("./youtube_key"),
+    provider = new firebase.auth.GoogleAuthProvider();
 
 function getFBDetails(user){
     return $.ajax({
@@ -55,6 +45,27 @@ function logInGoogle() {
 function logOut() {
    return firebase.auth().signOut();
 }
+
+function getYouTubeData() {
+    console.log("button clicked");
+    var search = document.getElementById("search").value;
+    return new Promise((resolve,reject) => {
+    var info = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${search}&type=video&key=${youtube.youtubeKey}`; 
+    console.log(info);
+    var youtubeData = new XMLHttpRequest();
+      
+      youtubeData.addEventListener('load', function(){
+        var youtube = JSON.parse(this.responseText);
+        resolve(youtube);
+      });
+      youtubeData.addEventListener('error', function(){
+        reject();
+      });
+      youtubeData.open("GET", info);
+      youtubeData.send();
+    });
+    }
+
 //example with delete
 // function deleteItem(fbID) {
 // 	return $.ajax({
@@ -65,45 +76,9 @@ function logOut() {
 // 	});
 // }
 
-// //data builder
-// function buildSongObj(data){
-
-//     let songObj = {
-//       title: youtube,  
-//       aritst: playlist,
-//       thumbnail: getUser(),
-//       videoID: video
-//     };
-//     return songObj;
-//   }
-
-
-//   //add song data poster
-//   function addSong(songObj){
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
-//         type: 'POST',
-//         data: JSON.stringify(playlistObj),
-//         dataType: 'json'
-//     }).done((playlistID) => {
-//         return playlistID;
-//     });
-//   }
-
-//   $("#create_playlist").click(function() {
-//     let playlistObj = buildPlaylistObj();
-//     addPlaylist(playlistObj).then(
-//         (resolve) =>{
-//             console.log("resolved");
-//     });
-//   });
-
-
-
-
-
 module.exports = {
     getFBDetails,
+    getYouTubeData,
     addUserFB,
     updateUserFB,
     logInGoogle,
