@@ -65,74 +65,21 @@ clickedLogin =
       <div id="open_playlists"></div>
       
       </nav>`;
-      function getJoinPlaylists(){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/playlists.json`
-         }).done((resolve) => {
-             console.log("resolve", resolve);
-            return resolve;
-         }).fail((error) => {
-            return error;
-         });
-      }
-    getJoinPlaylists( ).then(
+
+
+
+    db.getJoinPlaylists( ).then(
         (resolve)=>{ console.log(resolve);
             var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
             console.log(keys);
             var i=0;
             for (i = 0; i < keys.length; i++) { 
-
-
-
             clickedJoin +=
             `<div class="open_playlist" id="${keys[i].key}">${keys[i].playlistName}
-            </div>`
-;
+            </div>`;
             body.innerHTML = clickedJoin; }
         });
 
-        document.querySelector("body").addEventListener("click", sendJoin);
-      
-        function sendJoin(event){
-            if (event.target.className === "open_playlist"){
-                console.log("id", event.target.id);
-                let id = event.target.id;
-                let joinObj = buildJoinObj(id);
-                addJoin(joinObj).then(
-                    (resolve) =>{
-                        console.log("yay");
-                    });
-            }
-        }
-        
-        var playlistID = $(".currentPlaylist").text();
-  
-        // data builder
-        function buildJoinObj(input){
-            console.log(playlistID);
-          let id = input;
-  
-          let joinObj = {
-              playlist_id: id,
-              member_uid: user.getUser()
-          };
-          return joinObj;
-        }
-        
-        //data poster
-        function addJoin(joinObj){
-          return $.ajax({
-              url: `${firebase.getFBsettings().databaseURL}/playlist_members.json`,
-              type: 'POST',
-              data: JSON.stringify(joinObj),
-              dataType: 'json'
-          }).done((joinID) => {
-            console.log(joinID);
-              return joinID;
-          });
-        }
-    
-  
 });
 }
 

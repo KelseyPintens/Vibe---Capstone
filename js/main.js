@@ -9,6 +9,34 @@ let $ = require('jquery'),
     user = require("./user"),
     dom = require("./dom-builder");
 
+    document.querySelector("body").addEventListener("click", sendJoin);
+      
+        function sendJoin(event){
+            if (event.target.className === "open_playlist"){
+                console.log("id", event.target.id);
+                let id = event.target.id;
+                let joinObj = buildJoinObj(id);
+                db.addJoin(joinObj).then(
+                    (resolve) =>{
+                        console.log("yay");
+                    });
+            }
+        }
+        
+        var playlistID = $(".currentPlaylist").text();
+  
+        // data builder
+        function buildJoinObj(input){
+            console.log(playlistID);
+          let id = input;
+  
+          let joinObj = {
+              playlist_id: id,
+              member_uid: user.getUser()
+          };
+          return joinObj;
+        }
+
 // $("#logout").addClass("is-hidden");
 // $("#zip-container").addClass("is-hidden");
 
