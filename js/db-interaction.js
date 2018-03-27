@@ -89,6 +89,52 @@ function getYouTubeData() {
         });
       }
 
+      function addPlaylist(playlistObj){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
+            type: 'POST',
+            data: JSON.stringify(playlistObj),
+            dataType: 'json'
+        }).done((playlistID) => {
+            return playlistID;
+        });
+      }
+
+      function getPlaylistdata(){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/playlists.json`
+         }).done((resolve) => {
+            return resolve;
+         }).fail((error) => {
+            return error;
+         });
+      }
+
+      function getVideodata(){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/songs.json`
+         }).done((resolve) => {
+            return resolve;
+         }).fail((error) => {
+            return error;
+         });
+      }
+
+      function addSendSong(sendSongObj){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/songs.json`,
+            type: 'POST',
+            data: JSON.stringify(sendSongObj),
+            dataType: 'json'
+        }).done((sendSongID) => {
+          console.log(sendSongID);
+            return sendSongID;
+        });
+      }
+
+      
+      
+
 //example with delete
 // function deleteItem(fbID) {
 // 	return $.ajax({
@@ -106,6 +152,10 @@ module.exports = {
     updateUserFB,
     addJoin,
     getJoinPlaylists,
+    getPlaylistdata,
+    getVideodata,
+    addSendSong,
+    addPlaylist,
     logInGoogle,
     logOut
 };
