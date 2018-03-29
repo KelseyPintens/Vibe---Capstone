@@ -66,84 +66,81 @@ function getYouTubeData() {
     });
     }
 
-    function getJoinPlaylists(){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/playlists.json`
-         }).done((resolve) => {
-             console.log("resolve", resolve);
-            return resolve;
-         }).fail((error) => {
-            return error;
-         });
-      }
+function getJoinPlaylists(){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/playlists.json`
+        }).done((resolve) => {
+            console.log("resolve", resolve);
+        return resolve;
+        }).fail((error) => {
+        return error;
+        });
+    }
 
-    function addJoin(joinObj){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/playlist_members.json`,
-            type: 'POST',
-            data: JSON.stringify(joinObj),
-            dataType: 'json'
+function addJoin(joinObj){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/playlist_members.json`,
+        type: 'POST',
+        data: JSON.stringify(joinObj),
+        dataType: 'json'
         }).done((joinID) => {
-          console.log(joinID);
-            return joinID;
+        console.log(joinID);
+        return joinID;
         });
-      }
+    }
 
-      function addPlaylist(playlistObj){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
-            type: 'POST',
-            data: JSON.stringify(playlistObj),
-            dataType: 'json'
+function addPlaylist(playlistObj){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/playlists.json`,
+        type: 'POST',
+        data: JSON.stringify(playlistObj),
+        dataType: 'json'
         }).done((playlistID) => {
-            return playlistID;
+        return playlistID;
         });
-      }
+    }
 
-      function getPlaylistdata(){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/playlists.json`
-         }).done((resolve) => {
-            return resolve;
-         }).fail((error) => {
-            return error;
-         });
-      }
+function getPlaylistdata(){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/playlists.json`
+        }).done((resolve) => {
+        return resolve;
+        }).fail((error) => {
+        return error;
+        });
+    }
 
-      function getVideodata(){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/songs.json`
-         }).done((resolve) => {
-            return resolve;
-         }).fail((error) => {
-            return error;
-         });
-      }
+function getVideodata(){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/songs.json`
+        }).done((resolve) => {
+        return resolve;
+        }).fail((error) => {
+        return error;
+        });
+    }
 
-      function addSendSong(sendSongObj){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}/songs.json`,
-            type: 'POST',
-            data: JSON.stringify(sendSongObj),
-            dataType: 'json'
+function addSendSong(sendSongObj){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/songs.json`,
+        type: 'POST',
+        data: JSON.stringify(sendSongObj),
+        dataType: 'json'
         }).done((sendSongID) => {
-          console.log(sendSongID);
-            return sendSongID;
+        console.log(sendSongID);
+        return sendSongID;
         });
-      }
+    }
 
-      
-      
+function removeSong(songId){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/songs/${songId}.json`,
+        type: 'DELETE'
+        }).done((data) => {
+        return data;
+        });
+    }
 
-//example with delete
-// function deleteItem(fbID) {
-// 	return $.ajax({
-//       	url: `${firebase.getFBsettings().databaseURL}/songs/${fbID}.json`,
-//       	method: "DELETE"
-// 	}).done((data) => {
-// 		return data;
-// 	});
-// }
 
 module.exports = {
     getFBDetails,
@@ -156,6 +153,7 @@ module.exports = {
     getVideodata,
     addSendSong,
     addPlaylist,
+    removeSong,
     logInGoogle,
     logOut
 };

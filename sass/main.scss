@@ -226,3 +226,26 @@ h5 {
     height: 4em;
 }
 
+.print_playlists {
+    margin-top: 1em;
+    margin-left: 1em;
+    width: 310px;
+}
+
+.playlist_list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.open_playlist {
+    margin: 1em;
+    color: $black;
+    font-size: 1em;
+}
+
+.join_list {
+    margin: 1em;
+    font-size: 1em;
+    color: $orange;
+}
