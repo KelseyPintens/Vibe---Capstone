@@ -43,70 +43,76 @@ clickedLogin =
 </div>`;
     body.innerHTML = clickedLogin;
 
-     ////// Joining FB Playlist //////
+////// Joining FB Playlist //////
 
-     document.querySelector("body").addEventListener("click", sendJoin);
-      
-     function sendJoin(event){
-         if (event.target.className === "open_playlist"){
-             console.log("id", event.target.id);
-             let id = event.target.id;
-             let joinObj = buildJoinObj(id);
-             db.addJoin(joinObj).then(
-                 (resolve) =>{
-                     console.log("yay");
-                 });
-         }
-     }
-     
-     var playlistID = $(".currentPlaylist").text();
+document.querySelector("body").addEventListener("click", sendJoin);
 
-     // data builder
-     function buildJoinObj(input){
-         console.log(playlistID);
-       let id = input;
+function sendJoin(event){
+    if (event.target.className === "join_list"){
+        console.log("id", event.target.id);
+        let id = event.target.id;
+        let joinObj = buildJoinObj(id);
+        db.addJoin(joinObj).then(
+            (resolve) =>{
+                console.log("yay");
+            });
+    }
+}
 
-       let joinObj = {
-           playlist_id: id,
-           member_uid: user.getUser()
-       };
-       return joinObj;
-     }
+var playlistID = $(".currentPlaylist").text();
 
+// data builder
+function buildJoinObj(input){
+    console.log(playlistID);
+let id = input;
 
-  $("#join_playlist").click(function() {
-      var clickedJoin;
-      console.log("clicked join");
-      clickedJoin = 
-      `    <nav>
-      <ul class="nav container">
-          <li class="nav-item">
-              <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
-          </li>
-          <li class="nav-item">
-              <h4>Join Playlist</h4>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
-          </li>
-      </ul>
-      <div id="open_playlists"></div>
-      
-      </nav>`;
+let joinObj = {
+    playlist_id: id,
+    member_uid: user.getUser()
+};
+return joinObj;
+}
 
 
+$("#join_playlist").click(function() {
+var clickedJoin;
+console.log("clicked join");
+clickedJoin = 
+`    <nav>
+<ul class="nav container">
+    <li class="nav-item">
+        <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+    </li>
+    <li class="nav-item">
+        <h4>Join Playlist</h4>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+    </li>
+</ul>
+<div id="open_playlists"></div>
 
-    db.getJoinPlaylists( ).then(
-        (resolve)=>{ console.log(resolve);
-            var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
-            console.log(keys);
-            var i=0;
-            for (i = 0; i < keys.length; i++) { 
-            clickedJoin +=
-            `<div class="open_playlist" id="${keys[i].key}">${keys[i].playlistName}
-            </div>`;
-            body.innerHTML = clickedJoin; }
-        });
+</nav>`;
+
+
+
+db.getJoinPlaylists( ).then(
+(resolve)=>{ console.log(resolve);
+    var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+    console.log(keys);
+    var i=0;
+    for (i = 0; i < keys.length; i++) { 
+    clickedJoin +=
+    `<div class="print_playlists">
+        <div><hr class="col deco_long" align="center"></div>
+        <div class="playlist_list">
+            <div class="open_playlist">${keys[i].playlistName}</div>
+            <div class="join_list" id="${keys[i].key}">JOIN</div>
+        </div>
+        <div class="currentPlaylist" style="display: none;">${keys[i].key}</div>
+    </div>`;
+    body.innerHTML = clickedJoin; }
+});
 
 });
 }
@@ -116,9 +122,9 @@ clickedLogin =
 //data builder
 function buildPlaylistObj(){
     var playlist = document.getElementById("playlist_name").value;
-    var password = document.getElementById("password").value;
+    // var password = document.getElementById("password").value;
     let playlistObj = {
-      code: password,  
+    //   code: password,  
       playlistName: playlist,
       uid: user.getUser()
     };
@@ -166,83 +172,87 @@ function buildPlaylistObj(){
         `<div class="currentPlaylist" style="display: none;" id="currentPlaylist" id="${resolve.name}">${resolve.name}</div>`;         });
     });
 
-                /////// viewing playlist////////
+/////// viewing playlist////////
 
-                document.querySelector("body").addEventListener("click", runPlaylist);
+document.querySelector("body").addEventListener("click", runPlaylist);
 
-                function runPlaylist() {
-                if (event.target.id === "view_playlist") {
-                    playlist();
-                } }
-                function playlist(event){
-                    // if (event.target.id === "view_playlist"  || event.target.className === "delete"){
-                    console.log("clicked view playlist");
-                    var resolve;
-                    db.getPlaylistdata(resolve).then(
-                    (resolve)=>{ console.log(resolve);
-                        var playlistID = $(".currentPlaylist").text();
-                        var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
-                        console.log(keys);
-                        var i=0;
-                            for (i = 0; i < keys.length; i++) { 
-                            if (keys[i].key == playlistID) {
-                            var body = document.getElementById("body-container"); 
-                            body.innerHTML = `<nav>
-                                     <ul class="nav container">
-                                         <li class="nav-item">
-                                             <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
-                                         </li>
-                                         <li class="nav-item">
-                                             <h4>${keys[i].playlistName}</h4>
-                                         </li>
-                                         <li class="nav-item">
-                                             <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
-                                         </li>
-                                     </ul>
-                                     <div id="player"></div>
-                                     <div id="playlist_songs"></div>
-                                </nav>  `;
-                            console.log(keys[i].playlistName);
-                            }
-                        } 
-            
-                    }).then(
-                        db.getVideodata(resolve).then((resolve)=>{
-                            console.log(resolve);
-                            var playlistID = $(".currentPlaylist").text();
-                            console.log("playlistID", playlistID);
-                            var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
-                            console.log(keys);
-                            var player = document.getElementById("player");
-                            player.innerHTML = `<iframe id="player" type="text/html" width="320" height="195"
-                            src="http://www.youtube.com/embed/zDo0H8Fm7d0?enablejsapi=1&origin=http://example.com"
-                            frameborder="0"></iframe>`;
-                            var i=0;
-                            for (i = 0; i < keys.length; i++) { 
-                            if (keys[i].playlist_uid == playlistID) {
-                            var body = document.getElementById("playlist_songs"); 
-                            body.innerHTML +=                   
-                            `<div class="print_song_list">
-                                    <div><hr class="col deco_long" align="center"></div>
-                                    <div class="song_container">
-                                    <div><img src="${keys[i].thumbnail}" alt="song thumbnail" class="song_image"></div>
-                                    <div class="song_info">
-                                        <h1 class="song_title">${keys[i].title}</h1>
-                                        <h2 class="song_artist">${keys[i].artist}</h2>
-                                        <div class="delete" id="${keys[i].key}">DELETE</div>
-                                    </div>
-
-                                    </div>
-                                </div>`;
-                            console.log(keys[i].title);
-                            }
-                        } 
-                        })
-                    );  
-                
+function runPlaylist() {
+if (event.target.id === "view_playlist") {
+    playlist();
+} }
+function playlist(event){
+    // if (event.target.id === "view_playlist"  || event.target.className === "delete"){
+    console.log("clicked view playlist");
+    var resolve;
+    db.getPlaylistdata(resolve).then(
+    (resolve)=>{ console.log(resolve);
+        var playlistID = $(".currentPlaylist").text();
+        var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+        console.log(keys);
+        var i=0;
+            for (i = 0; i < keys.length; i++) { 
+            if (keys[i].key == playlistID) {
+            var body = document.getElementById("body-container"); 
+            body.innerHTML = `<nav>
+                        <ul class="nav container">
+                            <li class="nav-item">
+                                <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+                            </li>
+                            <li class="nav-item">
+                                <h4>${keys[i].playlistName}</h4>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                            </li>
+                        </ul>
+                        <div id="playerDiv"></div>
+                        <div id="playlist_songs"></div>
+                </nav>  `;
+            console.log(keys[i].playlistName);
             }
+        } 
 
-//////// search songs//////////////
+    }).then(
+        db.getVideodata(resolve).then((resolve)=>{
+            console.log(resolve);
+            var playlistID = $(".currentPlaylist").text();
+            console.log("playlistID", playlistID);
+            var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+            console.log(keys);
+            var songs = [];
+            var i=0;
+            for (i = 0; i < keys.length; i++) { 
+            if (keys[i].playlist_uid == playlistID) {
+            songs.push(`${keys[i].videoID}`);
+            var body = document.getElementById("playlist_songs"); 
+            body.innerHTML +=                   
+            `<div class="print_song_list">
+                    <div><hr class="col deco_long" align="center"></div>
+                    <div class="song_container">
+                    <div><img src="${keys[i].thumbnail}" alt="song thumbnail" class="song_image"></div>
+                    <div class="song_info">
+                        <h1 class="song_title">${keys[i].title}</h1>
+                        <h2 class="song_artist">${keys[i].artist}</h2>
+                        <div class="delete" id="${keys[i].key}">DELETE</div>
+                    </div>
+
+                    </div>
+                </div>`;
+            console.log(keys[i].title);
+            }
+        } console.log("list", songs);
+        var player = document.getElementById("playerDiv");
+        player.innerHTML = `<iframe id="player" type="text/html" class="col" align="center" width="320" height="195"
+        src="http://www.youtube.com/embed/${songs[0]}?autoplay=1"
+        frameborder="0"></iframe>`;
+        // var i=0;
+        // for (i = 0; i < songs.length; i++) {
+        // }
+        })
+    );  
+}
+
+///////////// search songs///////////////////
 
 document.querySelector("body").addEventListener("click", searchSong);
       
@@ -305,11 +315,10 @@ function buildSendSongObj(input){
 
 $(document).on("click", ".delete", deleteSong);
 
-// //clicked delete data
 function deleteSong(event){
         let songID = event.target.id;
         console.log("songID", songID);
-        removeSong(songID).then(
+        db.removeSong(songID).then(
             (resolve) => {
                 playlist();
             },
@@ -319,18 +328,8 @@ function deleteSong(event){
         );
 }
 
-// //data deleter
-function removeSong(songId){
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/songs/${songId}.json`,
-        type: 'DELETE'
-    }).done((data) => {
-        return data;
-    });
-}
+//////////// log in /////////////////
 
-
-// function that will render the '#body-container' with the reservation form
 $("#log_in").click(function() {
     domLogin();
 });
