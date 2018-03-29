@@ -168,10 +168,14 @@ function buildPlaylistObj(){
 
                 /////// viewing playlist////////
 
-                document.querySelector("body").addEventListener("click", playlist);
-      
+                document.querySelector("body").addEventListener("click", runPlaylist);
+
+                function runPlaylist() {
+                if (event.target.id === "view_playlist") {
+                    playlist();
+                } }
                 function playlist(event){
-                    if (event.target.id === "view_playlist"){
+                    // if (event.target.id === "view_playlist"  || event.target.className === "delete"){
                     console.log("clicked view playlist");
                     var resolve;
                     db.getPlaylistdata(resolve).then(
@@ -225,8 +229,9 @@ function buildPlaylistObj(){
                                     <div class="song_info">
                                         <h1 class="song_title">${keys[i].title}</h1>
                                         <h2 class="song_artist">${keys[i].artist}</h2>
+                                        <div class="delete" id="${keys[i].key}">DELETE</div>
                                     </div>
-                                    <div><img src="images/add_song.png" alt="add song" class="add_song_image" id="${i}"></div>
+
                                     </div>
                                 </div>`;
                             console.log(keys[i].title);
@@ -234,7 +239,7 @@ function buildPlaylistObj(){
                         } 
                         })
                     );  
-                }
+                
             }
 
 //////// search songs//////////////
@@ -293,6 +298,35 @@ function buildSendSongObj(input){
         return sendSongObj;
     } });
     }
+}
+
+
+//////////delete songs///////////////
+
+$(document).on("click", ".delete", deleteSong);
+
+// //clicked delete data
+function deleteSong(event){
+        let songID = event.target.id;
+        console.log("songID", songID);
+        removeSong(songID).then(
+            (resolve) => {
+                playlist();
+            },
+            (reject) => {
+                console.log("didn't load");
+            }
+        );
+}
+
+// //data deleter
+function removeSong(songId){
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/songs/${songId}.json`,
+        type: 'DELETE'
+    }).done((data) => {
+        return data;
+    });
 }
 
 
