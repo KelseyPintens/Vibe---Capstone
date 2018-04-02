@@ -334,7 +334,7 @@ var playlistArray = [];
 
 
     //do what you need here
-$( document ).ready(function() {
+function populatePage() {
     db.getJoinPlaylists( ).then(
     (resolve)=>{ console.log(resolve);
         var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
@@ -394,13 +394,96 @@ $( document ).ready(function() {
   
             }));
     
-    });
-}, 1000);
+
+}, 1000);    }
+
+if (window.location.pathname === "/home.html") {
+    populatePage();
+}
+
+
+document.querySelector("body").addEventListener("click", runList);
+
+function runList() {
+if (event.target.className === "see_list") {
+    var id = event.target.id; 
+    // if (event.target.id === "view_playlist"  || event.target.className === "delete"){
+    console.log("clicked view playlist");
+    var resolve;
+    db.getPlaylistdata(resolve).then(
+    (resolve)=>{ console.log(resolve);
+        var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+        console.log(keys);
+        var i=0;
+            for (i = 0; i < keys.length; i++) { 
+            if (keys[i].key == id) {
+            var body = document.getElementById("body-container"); 
+            body.innerHTML = `<nav>
+                        <ul class="nav container">
+                            <li class="nav-item">
+                                <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+                            </li>
+                            <li class="nav-item">
+                                <h4>${keys[i].playlistName}</h4>
+                            </li>
+                            <li class="nav-item">
+                                <a class="playlist_logo nav-link p-0 mt-3" href="home.html"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                            </li>
+                        </ul>
+                        <div id="playerDiv"></div>
+                        <div id="playlist_songs"></div>
+                </nav>  `;
+            console.log(keys[i].playlistName);
+            }
+        } 
+
+    }).then(
+        db.getVideodata(resolve).then((resolve)=>{
+            console.log(resolve);
+            var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+            console.log(keys);
+            var songs = [];
+            var i=0;
+            for (i = 0; i < keys.length; i++) { 
+            if (keys[i].playlist_uid == id) {
+            songs.push(`${keys[i].videoID}`);
+            var body = document.getElementById("playlist_songs"); 
+            body.innerHTML +=                   
+            `<div class="print_song_list">
+                    <div><hr class="col deco_long" align="center"></div>
+                    <div class="song_container">
+                    <div><img src="${keys[i].thumbnail}" alt="song thumbnail" class="song_image"></div>
+                    <div class="song_info">
+                        <h1 class="song_title">${keys[i].title}</h1>
+                        <h2 class="song_artist">${keys[i].artist}</h2>
+                        <div class="delete" id="${keys[i].key}">DELETE</div>
+                    </div>
+
+                    </div>
+                </div>`;
+            console.log(keys[i].title);
+            }
+        } console.log("list", songs);
+        var player = document.getElementById("playerDiv");
+        player.innerHTML = `<iframe id="player" type="text/html" class="col" align="center" width="320" height="195"
+        src="http://www.youtube.com/embed/${songs[0]}?autoplay=1"
+        frameborder="0"></iframe>`;
+        })
+    );  
+}
+
+} 
+
+$(".toggle_new_playlist").click(function() {
+    domLogin();
+});
 
 //////////// log in /////////////////
 
 $("#log_in").click(function() {
     domLogin();
 });
+
+
 
 
