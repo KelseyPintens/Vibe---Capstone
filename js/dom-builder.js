@@ -1,8 +1,8 @@
 "use strict";
 
 let $ = require("jquery"),
-db = require("./db-interaction");
-let firebase = require("./fb-config"),
+    db = require("./db-interaction"),
+    firebase = require("./fb-config"),
     user = require("./user");
 
 ////////// Clicked Log In//////////////
@@ -16,7 +16,7 @@ clickedLogin =
     `<nav>
     <ul class="nav">
         <li class="nav-item container-fluid">
-            <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" class="float-right" width="45px"></a>
+            <a class="playlist_logo nav-link p-0 mt-3" href="home.html"><img src="images/playlistlogo.png" alt="playlist logo" class="float-right" width="45px"></a>
         </li>
     </ul>
 </nav>
@@ -87,7 +87,7 @@ clickedJoin =
         <h4>Join Playlist</h4>
     </li>
     <li class="nav-item">
-        <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+        <a class="playlist_logo nav-link p-0 mt-3" href="home.html"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
     </li>
 </ul>
 <div id="open_playlists"></div>
@@ -100,8 +100,10 @@ db.getJoinPlaylists( ).then(
 (resolve)=>{ console.log(resolve);
     var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
     console.log(keys);
+    var userid = user.getUser();
     var i=0;
-    for (i = 0; i < keys.length; i++) { 
+    for (i = 0; i < keys.length; i++) {
+    if (userid !== keys[i].uid) {     
     clickedJoin +=
     `<div class="print_playlists">
         <div><hr class="col deco_long" align="center"></div>
@@ -111,7 +113,7 @@ db.getJoinPlaylists( ).then(
         </div>
         <div class="currentPlaylist" style="display: none;">${keys[i].key}</div>
     </div>`;
-    body.innerHTML = clickedJoin; }
+    body.innerHTML = clickedJoin; } }
 });
 
 });
@@ -147,7 +149,7 @@ function buildPlaylistObj(){
                     <h4>Add Songs</h4>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                    <a class="playlist_logo nav-link p-0 mt-3" href="home.html"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
                 </li>
             </ul>
         </nav>
@@ -202,7 +204,7 @@ function playlist(event){
                                 <h4>${keys[i].playlistName}</h4>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                                <a class="playlist_logo nav-link p-0 mt-3" href="home.html"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
                             </li>
                         </ul>
                         <div id="playerDiv"></div>
@@ -327,6 +329,73 @@ function deleteSong(event){
             }
         );
 }
+
+var playlistArray = [];
+
+
+    //do what you need here
+$( document ).ready(function() {
+    db.getJoinPlaylists( ).then(
+    (resolve)=>{ console.log(resolve);
+        var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+        console.log(keys);
+        setTimeout(function(){
+        var userid = user.getUser();
+        var user_playlists = document.getElementById("user_playlists");
+        var clickedJoin = "";
+        var i=0;
+        for (i = 0; i < keys.length; i++) {
+        if (userid === keys[i].uid) {     
+        clickedJoin +=
+        `<div class="print_playlists">
+            <div><hr class="col deco_long" align="center"></div>
+            <div class="playlist_list">
+                <div class="open_playlist">${keys[i].playlistName}</div>
+                <div class="see_list" id="${keys[i].key}">VIEW</div>
+            </div>
+            <div id="joined_playlist_list"></div>
+            <div class="currentPlaylist" style="display: none;">${keys[i].key}</div>
+        </div>`;
+        user_playlists.innerHTML = clickedJoin; } }
+    });
+        db.getJoinedPlaylists().then(
+        (resolve)=>{ console.log(resolve);
+            var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+            console.log(keys);
+            var userid = user.getUser();
+            var i=0;
+            for (i = 0; i < keys.length; i++) {
+            if (userid === keys[i].member_uid) {     
+                playlistArray.push(keys[i].playlist_id);
+                 } }
+                console.log("playlistArray", playlistArray);
+        }).then(
+        db.getJoinPlaylists().then(
+            (resolve)=>{ console.log(resolve);
+                var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+                console.log(keys);
+                console.log("playlistArray2", playlistArray);
+                var user_playlists = document.getElementById("joined_playlist_list");
+                var clickedJoin = "";
+                var i=0;
+                var x=0;
+                for (x = 0; x < playlistArray.length; x++) {
+                    for (i = 0; i < keys.length; i++) {
+                        if (playlistArray[x] === keys[i].key) {     
+                        console.log("playlistName", keys[i].playlistName); 
+                        clickedJoin +=
+                        `<div><hr class="col deco_long" align="center"></div>
+                            <div class="playlist_list">
+                                <div class="open_playlist">${keys[i].playlistName}</div>
+                                <div class="join_list" id="${keys[i].key}">VIEW</div>
+                            </div>`;
+                        user_playlists.innerHTML = clickedJoin;}}    
+                }
+  
+            }));
+    
+    });
+}, 1000);
 
 //////////// log in /////////////////
 

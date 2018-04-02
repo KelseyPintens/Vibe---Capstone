@@ -179,6 +179,14 @@ h5 {
     border-bottom: 5px solid $gray;
 }
 
+#search_playlists {
+    margin-top: 1em;
+    width: 250px;
+    border-style: none;
+    border-bottom: 5px solid $gray;
+}
+
+
 // search songs 
 
 .print_song_list {
@@ -248,4 +256,41 @@ h5 {
     margin: 1em;
     font-size: 1em;
     color: $orange;
+}
+
+.see_list {
+    margin: 1em;
+    font-size: 1em;
+    color: $pink;
+}
+
+// home
+
+#playlist_nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+}
+
+.toggle_playlists {
+    font-size: .75em;
+    padding: .5em 1em;
+    border-radius: 1em;
+    background: $green;
+    color: #ffffff;
+}
+
+.toggle_new_playlist {
+    font-size: .75em;
+    padding: .5em 1em;
+    color: $green;
+}
+
+#logout {
+    float: right;
+    padding-top: 1.125em;
+    padding-left: 1.5em;
+    font-size: .75em;
+    color: $green;
 }

@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>VIBE</title>
+    <title>VIBE Homepage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
 
 </head>
 
-<body onload="populatePlayists()">
+<body>
 
     <div class="container-fluid">
         <div class="row">
@@ -19,28 +19,33 @@
             <div class="col text-right top_bar">100%</div>
         </div>
     </div>
-    
-    <nav>
-        <ul class="nav container">
-            <li class="nav-item">
-                <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
-            </li>
-            <li class="nav-item">
-                <h4>Join Playlist</h4>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link p-0 mt-3" href="#"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
-            </li>
-        </ul>
 
-        <div id="open_playlists"></div>
-   </nav>
+    <div id="body-container">
+        <nav>
+            <!-- <div id="top_nav"> -->
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6" id="playlist_nav">
+                        <div><h4 class="text-center toggle_playlists">PLAYLISTS</h4></div>
+                        <div><h4 class="text-center toggle_new_playlist">NEW PLAYLIST</h4></div>
+                    </div>
+                    <div class="col-3" id="logout">Log Out</div>
+                </div>
+            <!-- </div> -->
+        </nav>
 
 
-    <script src="dist/app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+        <div class="col" align="center">
+                <input type="text" class="form_control" id="search_playlists" text-align="center" placeholder="Search Playlists"><br>
+        </div>
+
+        <div id="user_playlists"></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+<script src="dist/app.js"></script>
+
 </body>
 </html>
