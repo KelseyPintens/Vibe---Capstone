@@ -34,7 +34,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 function getUser(){
-    console.log("current user", currentUser);
+    console.log("current user", currentUser.uid);
 	return currentUser.uid;
 }
 

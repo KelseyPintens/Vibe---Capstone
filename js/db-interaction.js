@@ -141,6 +141,17 @@ function removeSong(songId){
         });
     }
 
+    function getJoinedPlaylists(){
+        return $.ajax({
+            url: `${firebase.getFBsettings().databaseURL}/playlist_members.json`
+            }).done((resolve) => {
+                console.log("resolve", resolve);
+            return resolve;
+            }).fail((error) => {
+            return error;
+            });
+        }
+
 
 module.exports = {
     getFBDetails,
@@ -149,6 +160,7 @@ module.exports = {
     updateUserFB,
     addJoin,
     getJoinPlaylists,
+    getJoinedPlaylists,
     getPlaylistdata,
     getVideodata,
     addSendSong,
