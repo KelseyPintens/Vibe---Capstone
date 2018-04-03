@@ -54,7 +54,69 @@ function sendJoin(event){
         let joinObj = buildJoinObj(id);
         db.addJoin(joinObj).then(
             (resolve) =>{
-                console.log("yay");
+                var id = event.target.id; 
+                // if (event.target.id === "view_playlist"  || event.target.className === "delete"){
+                console.log("clicked view playlist");
+                db.getPlaylistdata(resolve).then(
+                (resolve)=>{ console.log(resolve);
+                    var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+                    console.log(keys);
+                    var i=0;
+                        for (i = 0; i < keys.length; i++) { 
+                        if (keys[i].key == id) {
+                        var body = document.getElementById("body-container"); 
+                        body.innerHTML = `<nav>
+                                    <ul class="nav container">
+                                        <li class="nav-item">
+                                            <a class="nav-link mt-3" href="#"><img src="images/back_arrow.png" alt="back arrow" width="35px"></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <h4>${keys[i].playlistName}</h4>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="playlist_logo nav-link p-0 mt-3" href="home.html"><img src="images/playlistlogo.png" alt="playlist logo" width="45px"></a>
+                                        </li>
+                                    </ul>
+                                    <div id="playerDiv"></div>
+                                    <div id="playlist_songs"></div>
+                            </nav>  `;
+                        console.log(keys[i].playlistName);
+                        }
+                    } 
+            
+                }).then(
+                    db.getVideodata(resolve).then((resolve)=>{
+                        console.log(resolve);
+                        var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
+                        console.log(keys);
+                        var songs = [];
+                        var i=0;
+                        for (i = 0; i < keys.length; i++) { 
+                        if (keys[i].playlist_uid == id) {
+                        songs.push(`${keys[i].videoID}`);
+                        var body = document.getElementById("playlist_songs"); 
+                        body.innerHTML +=                   
+                        `<div class="print_song_list">
+                                <div><hr class="col deco_long" align="center"></div>
+                                <div class="song_container">
+                                <div><img src="${keys[i].thumbnail}" alt="song thumbnail" class="song_image"></div>
+                                <div class="song_info">
+                                    <h1 class="song_title">${keys[i].title}</h1>
+                                    <h2 class="song_artist">${keys[i].artist}</h2>
+                                    <div class="delete" id="${keys[i].key}">DELETE</div>
+                                </div>
+            
+                                </div>
+                            </div>`;
+                        console.log(keys[i].title);
+                        }
+                    } console.log("list", songs);
+                    var player = document.getElementById("playerDiv");
+                    player.innerHTML = `<iframe id="player" type="text/html" class="col" align="center" width="320" height="195"
+                    src="http://www.youtube.com/embed/${songs[0]}?autoplay=1"
+                    frameborder="0"></iframe>`;
+                    })
+                );
             });
     }
 }
@@ -335,11 +397,12 @@ var playlistArray = [];
 
     //do what you need here
 function populatePage() {
+    setTimeout(function(){
     db.getJoinPlaylists( ).then(
     (resolve)=>{ console.log(resolve);
         var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
         console.log(keys);
-        setTimeout(function(){
+
         var userid = user.getUser();
         var user_playlists = document.getElementById("user_playlists");
         var clickedJoin = "";
@@ -353,11 +416,10 @@ function populatePage() {
                 <div class="open_playlist">${keys[i].playlistName}</div>
                 <div class="see_list" id="${keys[i].key}">VIEW</div>
             </div>
-            <div id="joined_playlist_list"></div>
             <div class="currentPlaylist" style="display: none;">${keys[i].key}</div>
         </div>`;
         user_playlists.innerHTML = clickedJoin; } }
-    });
+
         db.getJoinedPlaylists().then(
         (resolve)=>{ console.log(resolve);
             var keys = Object.entries(resolve).map(e => Object.assign(e[1], { key: e[0] }));
@@ -384,18 +446,20 @@ function populatePage() {
                         if (playlistArray[x] === keys[i].key) {     
                         console.log("playlistName", keys[i].playlistName); 
                         clickedJoin +=
-                        `<div><hr class="col deco_long" align="center"></div>
+                        `<div class="print_playlists">   
+                            <div><hr class="col deco_long" align="center"></div>
                             <div class="playlist_list">
                                 <div class="open_playlist">${keys[i].playlistName}</div>
                                 <div class="join_list" id="${keys[i].key}">VIEW</div>
-                            </div>`;
+                            </div>
+                        </div>`;
                         user_playlists.innerHTML = clickedJoin;}}    
                 }
   
             }));
     
 
-}, 1000);    }
+}, 1000);        });}
 
 if (window.location.pathname === "/home.html") {
     populatePage();
