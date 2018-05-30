@@ -1,0 +1,267 @@
+.top_bar {
+  font-size: 0.8rem;
+  color: #35425F;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  color: #35425F;
+}
+
+#hello {
+  margin-top: 3.5em;
+  color: #35425F;
+}
+
+h4 {
+  margin-top: 1em;
+  color: #35425F;
+}
+
+h5 {
+  margin-top: 2em;
+  color: #35425F;
+}
+
+.create_playlist {
+  margin-top: 3em;
+  color: #ffffff;
+  background-color: #EE4585;
+  width: 10em;
+  height: 2.5em;
+  border-radius: 2.5em;
+}
+
+.join_playlist {
+  margin-top: 2em;
+  color: #ffffff;
+  background-color: #FAA541;
+  width: 10em;
+  height: 2.5em;
+  border-radius: 2.5em;
+}
+
+.log_in {
+  margin-top: 6em;
+  margin-bottom: 2em;
+  color: #ffffff;
+  background-color: #21C3EB;
+  width: 10em;
+  height: 2.5em;
+  border-radius: 2.5em;
+}
+
+.create_account {
+  margin-top: 2em;
+  color: #5CC4BF;
+  font-size: 1em;
+}
+
+.view_playlist {
+  margin-top: 0.75em;
+  color: #ffffff;
+  background-color: #EE4585;
+  width: 10em;
+  height: 2.5em;
+  border-radius: 2.5em;
+}
+
+.nearby {
+  margin-top: 2em;
+  color: #ffffff;
+  background-color: #FAA541;
+  width: 10em;
+  height: 2.5em;
+  border-radius: 2.5em;
+}
+
+.search_songs {
+  margin-top: 1em;
+  color: #ffffff;
+  background-color: #EE4585;
+  width: 10em;
+  height: 2.5em;
+  border-radius: 2.5em;
+}
+
+.break {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2em;
+}
+
+.deco {
+  width: 1in;
+  height: 0.025in;
+  background-color: #F1F2F3;
+}
+
+#or {
+  margin-left: 0.75em;
+  margin-right: 0.75em;
+  font-size: 1.5em;
+  color: #F1F2F3;
+}
+
+.deco_long {
+  width: 310px;
+  height: 0.025in;
+  background-color: #F1F2F3;
+  margin: 0;
+}
+
+.separate {
+  display: flex;
+  justify-content: center;
+}
+
+.deco_short {
+  width: 250px;
+  height: 0.025in;
+  background-color: #F1F2F3;
+  margin-top: 5em;
+}
+
+#email {
+  margin-top: 3em;
+  width: 250px;
+  border-style: none;
+  border-bottom: 5px solid #F1F2F3;
+}
+
+#playlist_name {
+  margin-top: 3em;
+  width: 250px;
+  border-style: none;
+  border-bottom: 5px solid #F1F2F3;
+}
+
+#password {
+  margin-top: 2em;
+  width: 250px;
+  border-style: none;
+  border-bottom: 5px solid #F1F2F3;
+}
+
+#search {
+  margin-top: 1em;
+  width: 250px;
+  border-style: none;
+  border-bottom: 5px solid #F1F2F3;
+}
+
+#search_playlists {
+  margin-top: 1em;
+  width: 250px;
+  border-style: none;
+  border-bottom: 5px solid #F1F2F3;
+}
+
+.print_song_list {
+  margin-top: 1em;
+  margin-left: 1em;
+  width: 310px;
+}
+
+.song_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.song_image {
+  margin: 0.75em 1em;
+}
+
+.add_song_image {
+  margin-top: 5em;
+  width: 25px;
+}
+
+.delete {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 10em;
+  color: #35425F;
+  font-size: 0.85em;
+}
+
+.song_title {
+  margin-top: 1em;
+  color: #35425F;
+  font-size: 0.85em;
+  width: 150px;
+}
+
+.song_artist {
+  color: #35425F;
+  font-size: 0.75em;
+}
+
+.fixed-bottom {
+  background-color: #F1F2F3;
+  height: 4em;
+}
+
+.print_playlists {
+  margin-top: 1em;
+  margin-left: 1em;
+  width: 310px;
+}
+
+.playlist_list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.open_playlist {
+  margin: 1em;
+  color: #35425F;
+  font-size: 1em;
+}
+
+.join_list {
+  margin: 1em;
+  font-size: 1em;
+  color: #FAA541;
+}
+
+.see_list {
+  margin: 1em;
+  font-size: 1em;
+  color: #EE4585;
+}
+
+#playlist_nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0;
+}
+
+.toggle_playlists {
+  font-size: 0.75em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  background: #5CC4BF;
+  color: #ffffff;
+}
+
+.toggle_new_playlist {
+  font-size: 0.75em;
+  padding: 0.5em 1em;
+  color: #5CC4BF;
+}
+
+#logout {
+  float: right;
+  padding-top: 1.125em;
+  padding-left: 1.5em;
+  font-size: 0.75em;
+  color: #5CC4BF;
+}

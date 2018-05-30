@@ -324,6 +324,7 @@ function searchSong(event){
     if (event.target.id === "search_songs"){
         var songList = document.getElementById("song_list");
         db.getYouTubeData().then((resolve) => {
+            console.log(resolve.items);
             var songList = document.getElementById("song_list");
             var i = 0;
             var songPrintList = "";
