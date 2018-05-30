@@ -1,25 +1,49 @@
 # Vibe---Capstone
 
-Problem: 
-People prefer different music sources.  Most prefer unpaid.  This makes it hard to create collaborative playlists while in a group.
+Vibe is an application which simplifies the process of creating a collaborative playlist.
 
-MVP: (Key features) 
-User logs in
-User is able to create a playlist
-User is able to join a playlist
-Hosts must be able to delete songs
-Users must be able to search playlists to join
-User is able to search and add songs to selected playlist
+## Getting Started
 
-Stretch Goals:
-Saving playlist options
-Filtering requests
-Repeat song control
-Song suggestions
-Link Accounts
-Hosts must be able to delete people
-Users must enter a code to join a playlist
-Hosting a playlist includes creating a playlist name and setting a code
-Specifications: 
-YouTube Search API
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+### Installing
+
+Step 1
+Clone repo
+
+```
+git clone https://github.com/KelseyPintens/Vibe---Capstone.git
+```
+
+Step 2
+Install dependencies
+
+```
+npm install
+```
+
+Step 3
+Checkout lib folder
+
+```
+lib
+```
+
+Step 4
+Run grunt
+
+```
+grunt
+```
+
+Step 5
+Start server
+
+```
+hs -o
+```
+
+## Built With
+
+* [YouTube](https://developers.google.com/youtube/) - YouTube API
+* [Grunt](https://gruntjs.com/) - Grunt Task Runner
